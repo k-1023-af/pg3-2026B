@@ -7,20 +7,24 @@ using namespace std;
 
 template <typename Type>
 
-Type Min(Type a, Type b) {
-	if (a > b) {
-		return static_cast<Type>(b);
+Type Recursive(Type wage, Type hourly, Type standard) {
+	if (wage >= standard) {
+		printf("After %d hours has passed\n", hourly);
+		return hourly;
 	}
-	else {
-		return static_cast<Type>(a);
-	}
+	printf("%d  %d\n", wage, standard);
+	wage = wage * 2 - 50;
+
+	return (Recursive(wage, ++hourly, standard += 1226));
 }
+
+int recursiveWage = 100;
+int standardWage = 1226;
+int hourlyIncrease = 0;
 
 int main() {
 
-	printf("%d\n", Min<int>(128, 256));
-	printf("%0.1f\n", Min<float>(52.5f, 55.0f));
-	printf("%lf\n", Min<double>(3.14159265, 2.7182818281));
+	int result = Recursive(recursiveWage, hourlyIncrease, standardWage);
 
 	return 0;
 }
