@@ -1,35 +1,63 @@
 #include <stdio.h>
 #include <windows.h>
-#include <algorithm>
-#include <vector>
-#include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <random> 
+#include <ctime>
 
 using namespace std;
 
-//template <typename Type>
+//typedef void (*PFunc)(int *);
+//
+//void SetTimeout(PFunc p, int second) {
+//	Sleep(second * 1000);
+//
+//	p(&second);
+//}
 
-typedef void (*PFunc)(int *);
+//void DelayReveal(void (*fn)(int, int), unsigned int delayMs, int roll, int userGuess);
 
-void DisplayResult(int* s) {
-	printf("%d\n", *s);
+typedef void (*Callback) (int result);
+
+int roll_dice() {
+	int min = 1;
+	int max = 6;
+
+	mt19937 gen(time(0));
+	uniform_int_distribution<> distrib(min, max);
+
+	int randNumber = distrib(gen);
+
+	return randNumber;
+
+	//cout << "サイコロの目は: " << randNumber << endl;
 }
 
-void SetTimeout(PFunc p, int second) {
-	Sleep(second * 1000);
+void judge_result(int result) {
+	int input;
 
-	p(&second);
+	scanf_s("%d", &input);
+	printf("judging...\n");
+	Sleep(3000);
+
+	if ((result % 2 == 1 && input == 1) || (result % 2 == 0 && input == 0)) {
+		printf("correct\n");
+	}
+	else { printf("incorrect\n"); }
+
+	printf("dice result is %d\n", result);
 }
-
-void DelayReveal(void (*fn)(int, int), unsigned int delayMs, int roll, int userGuess);
 
 int main() {
-	printf("start\n");
-
-	PFunc p;
-	p = DisplayResult;
-	SetTimeout(p, 5);
+	printf("start\nguess if the result is odd (1) or even (0)\n" );
 	
+	srand((int)time(NULL));
 
+	int dice_result = roll_dice();
+
+	Callback callback = judge_result;
+
+	callback(dice_result);
 
 	return 0;
 }
