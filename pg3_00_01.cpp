@@ -1,30 +1,35 @@
 #include <stdio.h>
+#include <windows.h>
 #include <algorithm>
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
-template <typename Type>
+//template <typename Type>
 
-Type Recursive(Type wage, Type hourly, Type standard) {
-	if (wage >= standard) {
-		printf("After %d hours has passed\n", hourly);
-		return hourly;
-	}
-	printf("%d  %d\n", wage, standard);
-	wage = wage * 2 - 50;
+typedef void (*PFunc)(int *);
 
-	return (Recursive(wage, ++hourly, standard += 1226));
+void DisplayResult(int* s) {
+	printf("%d\n", *s);
 }
 
-int recursiveWage = 100;
-int standardWage = 1226;
-int hourlyIncrease = 0;
+void SetTimeout(PFunc p, int second) {
+	Sleep(second * 1000);
+
+	p(&second);
+}
+
+void DelayReveal(void (*fn)(int, int), unsigned int delayMs, int roll, int userGuess);
 
 int main() {
+	printf("start\n");
 
-	int result = Recursive(recursiveWage, hourlyIncrease, standardWage);
+	PFunc p;
+	p = DisplayResult;
+	SetTimeout(p, 5);
+	
+
 
 	return 0;
 }
