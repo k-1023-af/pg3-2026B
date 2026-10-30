@@ -7,16 +7,6 @@
 
 using namespace std;
 
-//typedef void (*PFunc)(int *);
-//
-//void SetTimeout(PFunc p, int second) {
-//	Sleep(second * 1000);
-//
-//	p(&second);
-//}
-
-//void DelayReveal(void (*fn)(int, int), unsigned int delayMs, int roll, int userGuess);
-
 typedef void (*Callback) (int result);
 
 int roll_dice() {
@@ -33,29 +23,31 @@ int roll_dice() {
 	//cout << "サイコロの目は: " << randNumber << endl;
 }
 
-void judge_result(int result) {
-	int input;
-
-	scanf_s("%d", &input);
-	printf("judging...\n");
-	Sleep(3000);
-
-	if ((result % 2 == 1 && input == 1) || (result % 2 == 0 && input == 0)) {
-		printf("correct\n");
-	}
-	else { printf("incorrect\n"); }
-
-	printf("dice result is %d\n", result);
-}
-
 int main() {
-	printf("start\nguess if the result is odd (1) or even (0)\n" );
-	
-	srand((int)time(NULL));
+
+	srand((unsigned int)time(NULL));
 
 	int dice_result = roll_dice();
 
-	Callback callback = judge_result;
+	Callback callback = [](int result) {
+		
+		int input;
+
+		printf("start\nguess if the result is odd (1) or even (2)\n");
+		scanf_s("%d", &input);
+
+		printf("judging...\n");
+		Sleep(3000);
+
+		if ((result % 2 == 1 && input == 1) || (result % 2 == 0 && input == 2)) {
+			printf("correct\n");
+		}
+		else {
+			printf("incorrect\n");
+		}
+		printf("dice result : %d\n", result);
+
+	};
 
 	callback(dice_result);
 
