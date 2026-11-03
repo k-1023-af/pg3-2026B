@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <time.h>
 #include <stdlib.h>
-#include <random> 
+//#include <random> 
 #include <ctime>
 
 using namespace std;
@@ -13,10 +13,12 @@ int roll_dice() {
 	int min = 1;
 	int max = 6;
 
-	mt19937 gen(time(0));
-	uniform_int_distribution<> distrib(min, max);
+	//mt19937 gen(time(0));
+	//uniform_int_distribution<> distrib(min, max);
+	//
+	//int randNumber = distrib(gen);
 
-	int randNumber = distrib(gen);
+	int randNumber = (rand() % (max - min + 1)) + min;
 
 	return randNumber;
 
