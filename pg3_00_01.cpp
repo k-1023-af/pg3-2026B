@@ -5,7 +5,7 @@
 
 using namespace std;
 
-typedef void (*Callback) (int result);
+typedef void (*Callback) (int roll, int userGuess);
 
 int roll_dice() {
 	int min = 1;
@@ -18,32 +18,43 @@ int roll_dice() {
 	//cout << "サイコロの目は: " << randNumber << endl;
 }
 
-void show_result(int result) {
+void show_result(int roll, int userGuess) {
+
+	if ((roll % 2 == 1 && userGuess == 1) || (roll % 2 == 0 && userGuess == 0)) {
+		printf("正解\n");
+	}
+	else { printf("不正解\n"); }
+
+	printf("サイコロの目は %d\n", roll);
+}
+
+int user_guess() {
 	int input;
 
-	printf("start\nguess if the result is odd (1) or even (2)\n");
+	printf("サイコロの出目が奇数(1)か偶数(0)か入力：\n");
 	scanf_s("%d", &input);
 
-	printf("judging...\n");
-	Sleep(3000);
+	return input;
+}
 
-	if ((result % 2 == 1 && input == 1) || (result % 2 == 0 && input == 2)) {
-		printf("correct\n");
-	}
-	else { printf("incorrect\n"); }
+void DelayReveal(void (*fn)(int, int), unsigned int delayMs, int roll, int userGuess) {
 
-	printf("dice result is %d\n", result);
+	printf("判定中．．．\n");
+	Sleep(delayMs);
+	fn(roll, userGuess);
 }
 
 int main() {
 
 	srand((int)time(NULL));
 
-	int dice_result = roll_dice();
+	int userGuess = user_guess();
+
+	int diceResult = roll_dice();
 
 	Callback callback = show_result;
 
-	callback(dice_result);
+	DelayReveal(callback, 3000, diceResult, userGuess);
 
 	return 0;
 }
