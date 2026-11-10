@@ -1,47 +1,29 @@
-
 #include <iostream>
 
-class Enemy {
+template <typename Type>
+
+class Function {
 public: 
-	void Update();
+	Type a;
+	Type b;
 
-	void Approach();
-	void Attack();
-	void Retreat();
+	Function(Type a, Type b) : a(a), b(b) {}
 
-	static void (Enemy::* spFuncTable[])();
-
-private:
-	int index = 0;
+	Type Min() {
+		return static_cast<Type>(a - b);
+	}
 };
 
-void Enemy::Approach(){ std::cout << "Enemy approaches!" << std::endl; }
-
-void Enemy::Attack(){ std::cout << "Enemy attacks!" << std::endl; }
-
-void Enemy::Retreat(){ std::cout << "Enemy retreats!" << std::endl; }
-
-void Enemy::Update() {
-	(this->*spFuncTable[index])();
-
-	std::cout << "Press 0 for next phase\n";
-
-	int input;
-	std::cin >> input;
-
-	if (input == 0) { index = (index + 1) % 3; }
-}
-
-void (Enemy::* Enemy::spFuncTable[])() = {
-	&Enemy::Approach,	// index = 0
-	&Enemy::Attack,		// index = 1
-	&Enemy::Retreat		// index = 2
-};
 
 
 int main() {
-	Enemy enemy;
-	while (1) { enemy.Update(); }
+	Function<int> subtractInt(10, 5);
+	Function<float> subtractFloat(10.5f, 5.2f);
+	Function<double> subtractDouble(11.53, 5.21);
+
+	printf("Min of int: %d\n", subtractInt.Min());
+	printf("Min of float: %f\n", subtractFloat.Min());
+	printf("Min of double: %lf\n", subtractDouble.Min());
 
 	return 0;
 }
