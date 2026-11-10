@@ -1,49 +1,47 @@
-#include <stdio.h>
-#include <windows.h>
-#include <time.h>
-#include <stdlib.h>
 
-using namespace std;
+#include <iostream>
 
-typedef void (*Callback) (int result);
+class Enemy {
+public: 
+	void Update();
 
-int roll_dice() {
-	int min = 1;
-	int max = 6;
+	void Approach();
+	void Attack();
+	void Retreat();
 
-	int randNumber = (rand() % (max - min + 1)) + min;
+	static void (Enemy::* spFuncTable[])();
 
-	return randNumber;
+private:
+	int index = 0;
+};
 
-	//cout << "サイコロの目は: " << randNumber << endl;
-}
+void Enemy::Approach(){ std::cout << "Enemy approaches!" << std::endl; }
 
-void show_result(int result) {
+void Enemy::Attack(){ std::cout << "Enemy attacks!" << std::endl; }
+
+void Enemy::Retreat(){ std::cout << "Enemy retreats!" << std::endl; }
+
+void Enemy::Update() {
+	(this->*spFuncTable[index])();
+
+	std::cout << "Press 0 for next phase\n";
+
 	int input;
+	std::cin >> input;
 
-	printf("start\nguess if the result is odd (1) or even (2)\n");
-	scanf_s("%d", &input);
-
-	printf("judging...\n");
-	Sleep(3000);
-
-	if ((result % 2 == 1 && input == 1) || (result % 2 == 0 && input == 2)) {
-		printf("correct\n");
-	}
-	else { printf("incorrect\n"); }
-
-	printf("dice result is %d\n", result);
+	if (input == 0) { index = (index + 1) % 3; }
 }
+
+void (Enemy::* Enemy::spFuncTable[])() = {
+	&Enemy::Approach,	// index = 0
+	&Enemy::Attack,		// index = 1
+	&Enemy::Retreat		// index = 2
+};
+
 
 int main() {
-
-	srand((int)time(NULL));
-
-	int dice_result = roll_dice();
-
-	Callback callback = show_result;
-
-	callback(dice_result);
+	Enemy enemy;
+	while (1) { enemy.Update(); }
 
 	return 0;
 }
