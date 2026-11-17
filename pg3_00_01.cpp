@@ -1,42 +1,54 @@
-#include <iostream>
+#include <cstdio>
+#include <numbers>
+#include <cmath>
 
-template <typename Type>
-
-class Function {
+class IShape {
 public: 
-	Type a;
-	Type b;
+	virtual void Size() = 0;
+	virtual void Draw() = 0;
 
-	Function(Type a, Type b) : a(a), b(b) {}
+	float radius = 5.5f;
+	float width = 4.0f;
+	float height = 6.0f;
+	float area;
 
-	Type Min() {
-		if (a > b) {
-			return static_cast<Type>(b);
-		}
-		if (a < b) {
-			return static_cast<Type>(a);
-		}
-		if (a == b) {
-			return static_cast<Type>(a);
-		}
+	virtual ~IShape() = default;
+};
+
+class Circle : public IShape {
+private:
+	void Size() override {
+		printf("〇の半径は%.02f\n", radius);
+	}
+	void Draw() override {
+		area = powf(radius, 2) * std::numbers::pi_v<float>;
+		printf("〇のサイズは%.08f\n", area);
+	}
+};
+
+class Rectangle : public IShape {
+private:
+	void Size() override {
+		printf("矩形の幅は%.02f!\n", width);
+		printf("矩形の縦は%.02f!\n", height);
+	}
+	void Draw() override {
+		area = width * height;
+		printf("矩形のサイズは%.02f!\n", area);
 	}
 };
 
 int main() {
-	Function<int> Int(10, 5);
-	Function<float> Float(10.5f, 5.2f);
-	Function<double> Double(11.53, 5.21);
-	Function<int> IntFloat(2, 4.5f);
-	Function<float> FloatDouble(22.3f, 11.25);
-	Function<double> DoubleInt(1, 3.11);
+	Circle circle;
+	Rectangle rectangle;
 
-	printf("Min of (10, 5) : %d\n", Int.Min());
-	printf("Min of (10.5, 5.2) : %f\n", Float.Min());
-	printf("Min of (11.53, 5.21) : %lf\n", Double.Min());
-	printf("Min of (2, 4.5) : %d\n", IntFloat.Min());
-	printf("Min of (22.3, 11.25) : %f\n", FloatDouble.Min());
-	printf("Min of (1, 3.11) : %lf\n", DoubleInt.Min());
-
+	IShape* shape1 = &circle;
+	IShape* shape2 = &rectangle;
+	
+	shape1->Size();
+	shape1->Draw();
+	shape2->Size();
+	shape2->Draw();
 
 	return 0;
 }
