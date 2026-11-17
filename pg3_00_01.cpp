@@ -1,46 +1,41 @@
-#include <stdio.h>
-#include <list>
 #include <iostream>
 
-using namespace std;
+template <typename Type>
+
+class Function {
+public: 
+	Type a;
+	Type b;
+
+	Function(Type a, Type b) : a(a), b(b) {}
+
+	Type Min() {
+		if (a > b) {
+			return static_cast<Type>(b);
+		}
+		if (a < b) {
+			return static_cast<Type>(a);
+		}
+		if (a == b) {
+			return static_cast<Type>(a);
+		}
+	}
+};
 
 int main() {
-	
-	//Yamanote Line train station names list
+	Function<int> Int(10, 5);
+	Function<float> Float(10.5f, 5.2f);
+	Function<double> Double(11.53, 5.21);
+	Function<int> IntFloat(2, 4.5f);
+	Function<float> FloatDouble(22.3f, 11.25);
+	Function<double> DoubleInt(1, 3.11);
 
-	//1970 (Showa 45) station list
-	list <const char*> eki_list{
-		"Tokyo", "Kanda", "Akihabara", "Okachimachi", "Ueno", "Uguisudani", "Nippori",
-		"Tabata", "Komagome", "Sugamo", "Otsuka", "Ikebukuro", "Mejiro", "Takadanobaba",
-		"Shin-Okubo", "Shinjuku", "Yoyogi", "Harajuku", "Shibuya", "Ebisu", "Meguro",
-		"Gotanda", "Osaki", "Shinagawa", "Tamachi", "Hamamatsucho", "Shimbashi", "Yurakucho"
-	};
-
-	printf("1970年リスト \n");	//Showa 45
-	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); it_f++) {
-		std::cout << *it_f << endl;
-	}
-
-	printf("\n2019年リスト \n");	//Reiwa 1
-	list<const char*>::iterator it_f;
-	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); it_f++) {
-		if (*it_f == "Tabata") {
-			it_f = eki_list.insert(it_f, "Nishi-Nippori");
-			std::cout << *it_f << endl;
-			++it_f;
-		}
-		std::cout << *it_f << endl;
-	}
-	
-	printf("\n2022年リスト \n");	//Reiwa 4
-	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); it_f++) {
-		if (*it_f == "Tamachi") {
-			it_f = eki_list.insert(it_f, "Takanawa Gateway");
-			std::cout << *it_f << endl;
-			++it_f;
-		}
-		std::cout << *it_f << endl;
-	}
+	printf("Min of (10, 5) : %d\n", Int.Min());
+	printf("Min of (10.5, 5.2) : %f\n", Float.Min());
+	printf("Min of (11.53, 5.21) : %lf\n", Double.Min());
+	printf("Min of (2, 4.5) : %d\n", IntFloat.Min());
+	printf("Min of (22.3, 11.25) : %f\n", FloatDouble.Min());
+	printf("Min of (1, 3.11) : %lf\n", DoubleInt.Min());
 
 
 	return 0;
