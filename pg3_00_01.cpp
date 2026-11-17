@@ -1,51 +1,54 @@
 #include <cstdio>
+#include <numbers>
+#include <cmath>
 
-class Weapon {
+class IShape {
 public: 
-	virtual void attack() const {
-		printf("一撃!\n");
-	}
+	virtual void Size() = 0;
+	virtual void Draw() = 0;
 
-	virtual ~Weapon() = default;
+	float radius = 5.5f;
+	float width = 4.0f;
+	float height = 6.0f;
+	float area;
+
+	virtual ~IShape() = default;
 };
 
-class Sword : public Weapon {
-public:
-	void attack() const override {
-		printf("剣の一振り!\n");
+class Circle : public IShape {
+private:
+	void Size() override {
+		printf("〇の半径は%.02f\n", radius);
+	}
+	void Draw() override {
+		area = powf(radius, 2) * std::numbers::pi_v<float>;
+		printf("〇のサイズは%.08f\n", area);
 	}
 };
 
-class Spear : public Weapon {
-public:
-	void attack() const override {
-		printf("前方ウへの突き!\n");
+class Rectangle : public IShape {
+private:
+	void Size() override {
+		printf("矩形の幅は%.02f!\n", width);
+		printf("矩形の縦は%.02f!\n", height);
 	}
-};
-
-class Axe : public Weapon {
-public:
-	void attack() const override {
-		printf("斧を振り下ろせ!\n");
+	void Draw() override {
+		area = width * height;
+		printf("矩形のサイズは%.02f!\n", area);
 	}
 };
 
 int main() {
+	Circle circle;
+	Rectangle rectangle;
+
+	IShape* shape1 = &circle;
+	IShape* shape2 = &rectangle;
 	
-	Weapon weapon;
-	Sword sword;
-	Spear spear;
-	Axe axe;
-
-	Weapon* weapon1 = &weapon;
-	Weapon* weapon2 = &sword;
-	Weapon* weapon3 = &spear;
-	Weapon* weapon4 = &axe;
-
-	weapon1->attack();
-	weapon2->attack();
-	weapon3->attack();
-	weapon4->attack();
+	shape1->Size();
+	shape1->Draw();
+	shape2->Size();
+	shape2->Draw();
 
 	return 0;
 }
