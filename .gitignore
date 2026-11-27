@@ -346,3 +346,7 @@ MigrationBackup/
 EngineShaders/
 NoviceResources/
 imgui.ini
+Adapter
+DirectXGame
+External
+Novice
